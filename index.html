@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="Allan Collett">
+  <title>BMI Calculator</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  <script src="script.js"></script>
+
+  <!-- styling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: lightgrey;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #tabs {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: white;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    #tabs ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #tabs ul li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    #tabs ul li a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: white;
+      background-color: limegreen;
+      border-radius: 5px 5px 0 0;
+    }
+
+    #tabs ul li a:hover {
+      background-color: lightgray;
+    }
+
+    #imperialTab,
+    #metricTab {
+      display: none;
+    }
+
+    #tabs div.ui-tabs-active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: limegreen;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    p {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    h4 {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: black;
+    }
+  </style>
+
+  <script>
+    "use strict";
+
+    $(document).ready(function () {
+      $("#tabs").tabs();
+
+      // validation rules
+      $("#imperialTab form").validate({
+        rules: {
+          heightInFeet: {
+            required: true,
+            number: true
+          },
+          heightInInches: {
+            required: true,
+            number: true
+          },
+          weightInPounds: {
+            required: true,
+            number: true
+          }
+        },
+
+        // messages displayed if error with inputs
+        messages: {
+          heightInFeet: {
+            required: "Please enter your height in feet.",
+            number: "Please enter a valid number."
+          },
+          heightInInches: {
+            required: "Please enter your height in inches.",
+            number: "Please enter a valid number."
+          },
+          weightInPounds: {
+            required: "Please enter your weight in pounds.",
+            number: "Please enter a valid number."
+          }
+        },
+
+        // pulled from BMICalcHelper.js
+        submitHandler: function (form) {
+          var heightInFeet = Number($("#heightInFeet").val());
+          var heightInInches = Number($("#heightInInches").val());
+          var weightInPounds = Number($("#weightInPounds").val());
+
+          var bmiImperial = calcImperialBMIFeetAndInches(heightInFeet, heightInInches, weightInPounds);
+
+          $("#BMIImperial").text("Imperial BMI: " + bmiImperial.toFixed(2));
+        }
+      });
+
+      // validation rules
+      $("#metricTab form").validate({
+        rules: {
+          heightInCentimeters: {
+            required: true,
+            number: true
+          },
+          heightInMillimeters: {
+            required: true,
+            number: true
+          },
+          weightInKilos: {
+            required: true,
+            number: true
+          }
+        },
+
+        // messages displayed if error with inputs
+        messages: {
+          heightInCentimeters: {
+            required: "Please enter your height in centimeters.",
+            number: "Please enter a valid number."
+          },
+          heightInMillimeters: {
+            required: "Please enter your height in millimeters.",
+            number: "Please enter a valid number."
+          },
+          weightInKilos: {
+            required: "Please enter your weight in kilograms.",
+            number: "Please enter a valid number."
+          }
+        },
+        
+        // pulled from BMICalcHelper.js
+        submitHandler: function (form) {
+          var heightInCentimeters = Number($("#heightInCentimeters").val());
+          var heightInMillimeters = Number($("#heightInMillimeters").val());
+          var weightInKilos = Number($("#weightInKilos").val());
+
+          var bmiMetric = calcMetricBMICMandMM(heightInCentimeters, heightInMillimeters, weightInKilos);
+          
+          $("#BMIMetric").text("Metric BMI: " + bmiMetric.toFixed(2));
+        }
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+  <h1>Please input your height and weight</h1>
+
+  <div id="tabs">
+    <ul>
+      <li><a href="#imperialTab">Imperial</a></li>
+      <li><a href="#metricTab">Metric</a></li>
+    </ul>
+
+    <div id="imperialTab">
+      <form>
+        <label for="heightInFeet">Enter height in feet:</label>
+        <input type="text" name="heightInFeet" id="heightInFeet">
+
+        <label for="heightInInches">Enter height in inches:</label>
+        <input type="text" name="heightInInches" id="heightInInches">
+
+        <label for="weightInPounds">Enter weight in pounds:</label>
+        <input type="text" name="weightInPounds" id="weightInPounds">
+        <!-- button to calculate Imperial -->
+        <button id="calcImperial" type="submit">Calculate Imperial BMI</button>
+      </form>
+      <p id="BMIImperial"></p>
+    </div>
+
+    <div id="metricTab">
+      <form>
+        <label for="heightInCentimeters">Enter height in centimeters:</label>
+        <input type="text" name="heightInCentimeters" id="heightInCentimeters">
+
+        <label for="heightInMillimeters">Enter height in millimeters:</label>
+        <input type="text" name="heightInMillimeters" id="heightInMillimeters">
+
+        <label for="weightInKilos">Enter weight in kilograms:</label>
+        <input type="text" name="weightInKilos" id="weightInKilos">
+        <!-- button to calculate Metric -->
+        <button id="calcMetric" type="submit">Calculate Metric BMI</button>
+      </form>
+      <p id="BMIMetric"></p>
+    </div>
+  </div>
+
+  <h4>By Allan Collett</h4>
+</body>
+
+</html>
