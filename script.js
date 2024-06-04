@@ -1,11 +1,6 @@
-/*
-The explectation for all of these functions is that the inputs are numbers not
-strings.  Use Number to make the inputs numbers
-*/
-
 function calcImperialBMIFeetAndInches(heightInFeet, heightInInches, weightInPounds)
 {
-	// protection if I am passed strings make the number so I can apply isNaN
+	
 	heightInFeet = Number(heightInFeet);
 	heightInInches = Number(heightInInches);
 	weightInPounds = Number(weightInPounds);
@@ -23,7 +18,7 @@ function calcImperialBMIFeetAndInches(heightInFeet, heightInInches, weightInPoun
 	
 function calcImperialBMI(heightInInches, weightInPounds)
 {
-	// protection if I am passed strings make the number so I can apply isNaN
+	
 	heightInInches = Number(heightInInches);
 	weightInPounds = Number(weightInPounds);
 
@@ -44,7 +39,6 @@ function calcImperialBMI(heightInInches, weightInPounds)
 function calcMetricBMICMandMM(heightInCentimeters, heightInMillimeters, weightInKilos)
 {
 
-	// protection if I am passed strings make the number so I can apply isNaN
 	heightInCentimeters = Number(heightInCentimeters);
 	heightInMillimeters = Number(heightInMillimeters);
 	weightInKilos = Number(weightInKilos);
@@ -65,7 +59,6 @@ function calcMetricBMICMandMM(heightInCentimeters, heightInMillimeters, weightIn
 function calcMetricBMI(heightInCentimeters, weightInKilos)
 {
 
-	// protection if I am passed strings make the number so I can apply isNaN
 	heightInCentimeters = Number(heightInCentimeters);
 	weightInKilos = Number(weightInKilos);
 
